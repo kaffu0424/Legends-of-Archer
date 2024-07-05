@@ -100,4 +100,9 @@ public class PlayerTargeting : MonoBehaviour
             }
         }
     }
+
+    public void Attack()
+    {
+        // #TODO:공격 기능 만들기
+    }
 }
