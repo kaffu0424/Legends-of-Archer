@@ -32,6 +32,7 @@ public class JoyStickMovement : MonoBehaviour
     public Vector3 joyVec;
     float stickRadius;
 
+    public bool isMoveing;
     private void Start()
     {
         stickRadius = bgStick.GetComponent<RectTransform>().sizeDelta.y / 2;
@@ -44,6 +45,8 @@ public class JoyStickMovement : MonoBehaviour
         bgStick.transform.position = Input.mousePosition;       
         smallStick.transform.position = Input.mousePosition;
         stickFirstPosition = Input.mousePosition;
+
+        isMoveing = true;
 
         PlayerMovement.Instance.WalkPlayer();
     }   
@@ -68,6 +71,8 @@ public class JoyStickMovement : MonoBehaviour
         joyVec = Vector3.zero;
         bgStick.transform.position = joyStickDefalutPosition;
         smallStick.transform.position = joyStickDefalutPosition;
+
+        isMoveing = false;
 
         PlayerMovement.Instance.IdlePlayer();
     }

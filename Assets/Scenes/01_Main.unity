@@ -3189,37 +3189,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 469084, guid: 4f64287687043804ba01a8640888c560, type: 3}
   m_PrefabInstance: {fileID: 621322067}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &639818120
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 639818121}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &639818121
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 639818120}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.203207, y: -4.0440927, z: -0.5678678}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &687701976
 GameObject:
   m_ObjectHideFlags: 0
@@ -4426,6 +4395,7 @@ MonoBehaviour:
   smallStick: {fileID: 1916164871}
   bgStick: {fileID: 1611973442}
   joyVec: {x: 0, y: 0, z: 0}
+  isMoveing: 0
 --- !u!114 &1989106246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4676,5 +4646,4 @@ SceneRoots:
   - {fileID: 596529028}
   - {fileID: 1735193504}
   - {fileID: 1996710130}
-  - {fileID: 639818121}
   - {fileID: 687701977}

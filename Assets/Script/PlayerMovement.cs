@@ -92,7 +92,6 @@ public class PlayerMovement : MonoBehaviour
             case PlayerAnimatorState.WALK:
                 playerAnimator.SetBool("WALK", true);
                 break;
-
             case PlayerAnimatorState.ATTACK:
                 playerAnimator.SetBool("ATTACK", true);
                 break;

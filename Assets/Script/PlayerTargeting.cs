@@ -78,6 +78,15 @@ public class PlayerTargeting : MonoBehaviour
             TargetDist = 100f;
             getATarget = true;
         }
+
+        if(getATarget && !JoyStickMovement.Instance.isMoveing)
+        {
+            transform.LookAt(new Vector3( MonsterListInROOM[targetIndex].transform.position.x, transform.position.y, MonsterListInROOM[targetIndex].transform.position.z));
+            // Attack();
+
+            if (PlayerMovement.Instance.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                PlayerMovement.Instance.ChangeState(PlayerAnimatorState.ATTACK);
+        }
     }
 
     private void OnDrawGizmos()
