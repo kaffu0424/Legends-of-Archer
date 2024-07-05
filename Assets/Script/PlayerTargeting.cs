@@ -37,7 +37,7 @@ public class PlayerTargeting : MonoBehaviour
     public List<GameObject> MonsterListInROOM = new List<GameObject>();
 
     public GameObject playerBullet;
-    public Transform AttackPoint;
+    public Transform attackPoint;
 
     void Update()
     {
@@ -49,6 +49,7 @@ public class PlayerTargeting : MonoBehaviour
 
             for (int i = 0; i < MonsterListInROOM.Count; i++)
             {
+                // i번쨰 몬스터와 나의 거리
                 currentDist = Vector3.Distance(transform.position, MonsterListInROOM[i].transform.position);
 
                 RaycastHit hit;
@@ -82,7 +83,7 @@ public class PlayerTargeting : MonoBehaviour
         if(getATarget && !JoyStickMovement.Instance.isMoveing)
         {
             transform.LookAt(new Vector3( MonsterListInROOM[targetIndex].transform.position.x, transform.position.y, MonsterListInROOM[targetIndex].transform.position.z));
-            // Attack();
+            Attack();
 
             if (PlayerMovement.Instance.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
                 PlayerMovement.Instance.ChangeState(PlayerAnimatorState.ATTACK);
@@ -103,6 +104,8 @@ public class PlayerTargeting : MonoBehaviour
 
     public void Attack()
     {
-        // #TODO:공격 기능 만들기
+        GameObject bullet = Instantiate(playerBullet);
+        bullet.transform.rotation = transform.rotation;
+        bullet.transform.position = attackPoint.position;
     }
 }

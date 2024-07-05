@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(0, 50)] private float moveSpeed;
 
     // Animator
-    public Animator _playerAnimator;
+    private Animator _playerAnimator;
     public Animator playerAnimator => _playerAnimator;
 
     // Animation State
