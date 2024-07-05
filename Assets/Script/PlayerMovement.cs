@@ -83,18 +83,8 @@ public class PlayerMovement : MonoBehaviour
         playerAnimator.SetBool("ATTACK", false);
 
         playerState = state;
-        switch(state)
-        {
-            case PlayerAnimatorState.IDLE:
-                playerAnimator.SetBool("IDLE", true);
-                break;
 
-            case PlayerAnimatorState.WALK:
-                playerAnimator.SetBool("WALK", true);
-                break;
-            case PlayerAnimatorState.ATTACK:
-                playerAnimator.SetBool("ATTACK", true);
-                break;
-        }
+        playerAnimator.SetBool(stateStrings[(int)state], true);
+
     }
 }
