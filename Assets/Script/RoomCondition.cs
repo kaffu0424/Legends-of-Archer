@@ -7,14 +7,17 @@ public class RoomCondition : MonoBehaviour
 {
     [SerializeField] private List<GameObject> MonsterListInROOM;
 
-    public bool playerInROOM;
-    public bool isClearRoom;
+    private bool _playerInROOM;
+    private bool _isClearRoom;
+
+    public bool isClearRoom { get => _isClearRoom; set => _isClearRoom = value; }
+    public bool playerInROOM { get => _playerInROOM; set => _playerInROOM = value; }
     void Start()
     {
         MonsterListInROOM = new List<GameObject>();
 
-        playerInROOM = false;
-        isClearRoom = false;
+        _playerInROOM = false;
+        _isClearRoom = false;
     }
 
     // Update is called once per frame

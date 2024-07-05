@@ -31,18 +31,22 @@ public class PlayerMovement : MonoBehaviour
     }
     private static PlayerMovement instance;
 
+    // Move
     private Rigidbody playerRB;
     [SerializeField, Range(0, 50)] private float moveSpeed;
 
-    public Animator playerAnimator;
+    // Animator
+    public Animator _playerAnimator;
+    public Animator playerAnimator => _playerAnimator;
 
+    // Animation State
     private PlayerAnimatorState playerState;
-    string[] stateStrings;
+    private string[] stateStrings;
 
     void Start()
     {
         playerRB = GetComponent<Rigidbody>();
-        playerAnimator = GetComponent<Animator>();
+        _playerAnimator = GetComponent<Animator>();
 
         playerState = PlayerAnimatorState.IDLE;
         stateStrings = new string[4];
