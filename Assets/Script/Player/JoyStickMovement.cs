@@ -15,7 +15,7 @@ public class JoyStickMovement : MonoBehaviour
 
     // JoyStick Data
     private Vector3 joyVec;
-    private bool isMoveing;
+    [SerializeField] private bool isMoveing;
 
     // playerMovement
     private PlayerMovement playerMovement;

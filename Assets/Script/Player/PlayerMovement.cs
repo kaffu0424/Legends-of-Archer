@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     public void InitializePlayerMovement()
     {
         playerRB = GetComponent<Rigidbody>();
-        playerAnimator = GetComponent<Animator>();
+        playerAnimator = GetComponentInChildren<Animator>();
 
         playerState = PlayerAnimatorState.IDLE;
         stateStrings = new string[4];
@@ -46,13 +46,11 @@ public class PlayerMovement : MonoBehaviour
         joystick = PlayerManager.Instance.JoyStickMovement;
     }
 
-    public void PlayerMove()
+    private void Update()
     {
-
-        if (joystick.JoyVec.x != 0 || joystick.JoyVec.y != 0)
+        if (joystick.IsMoveing)
         {
-
-            playerRB.velocity = new Vector3( joystick.JoyVec.x, 0, joystick.JoyVec.y) * moveSpeed;
+            playerRB.velocity = new Vector3(joystick.JoyVec.x, 0, joystick.JoyVec.y) * moveSpeed;
 
             playerRB.rotation = Quaternion.LookRotation(new Vector3(
                 joystick.JoyVec.x, 0, joystick.JoyVec.y));

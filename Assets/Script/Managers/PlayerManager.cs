@@ -23,12 +23,4 @@ public class PlayerManager : Singleton<PlayerManager>
         joyStickMovement.InitializeJoystick();          // 플레이어 조이스틱 스크립트 초기화
         playerTargeting.InitializePlayerTargeting();    // 플레이어 타겟팅/공격 스크립트 초기화        
     }
-
-    private void Update()
-    {
-        playerMovement.PlayerMove();                    // 플레이어 움직임
-        //playerTargeting.Targeting();                    // 몬스터 타겟팅
-
-
-    }
 }
