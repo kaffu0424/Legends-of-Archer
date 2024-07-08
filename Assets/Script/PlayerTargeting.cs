@@ -5,102 +5,86 @@ using UnityEngine;
 
 public class PlayerTargeting : MonoBehaviour
 {
-    public static PlayerTargeting Instance
+    [SerializeField] private bool getATarget = false;   // 타겟팅중인 몬스터가 있는지에 대한 여부
+
+    private float currentDist = 0;      // 현재 거리
+    private float targetDist = 100f;    // 타겟 거리
+    private int targetIndex = -1;       // 타겟 index
+
+    [SerializeField] private LayerMask targetLayerMask; // 탐색 레이어
+
+    [SerializeField] private List<GameObject> monsterListInROOM = new List<GameObject>();
+
+    [SerializeField] private GameObject playerBullet;
+    [SerializeField] private Transform attackPoint;
+
+    private PlayerMovement playerMovement;
+    private JoyStickMovement playerJoystick;
+
+    // GET / SET
+    public List<GameObject> MonsterListInROOM { get => monsterListInROOM; set => monsterListInROOM = value; }
+    public void InitializePlayerTargeting()
     {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<PlayerTargeting>();
-                if (instance == null)
-                {
-                    var instanceContainer = new GameObject("PlayerTargeting");
-                    instance = instanceContainer.AddComponent<PlayerTargeting>();
-                }
-            }
-            return instance;
-        }
+        playerMovement = PlayerManager.Instance.PlayerMovement;
+        playerJoystick = PlayerManager.Instance.JoyStickMovement;
+
+        getATarget = false;
     }
-    private static PlayerTargeting instance;
 
-    public bool getATarget = false;
-
-    float currentDist = 0;      // 현재 거리
-    float closeDist = 100f;     // 가까운 거리
-    float TargetDist = 100f;    // 타겟 거리
-
-    int closeDistIndex = 0;     // 가장 가까운 index
-    int targetIndex = -1;       // 타겟팅 오브젝트 index
-
-    public LayerMask layerMask; // 탐색 레이어
-
-    public List<GameObject> MonsterListInROOM = new List<GameObject>();
-
-    public GameObject playerBullet;
-    public Transform attackPoint;
-
-    void Update()
+    public void Targeting()
     {
-        if(MonsterListInROOM.Count != 0)
+        // 몬스터의 수가 0이 아닐때 ( 몬스터가 맵에 존재할때
+        if (monsterListInROOM.Count != 0)
         {
-            currentDist = 0f;
-            closeDistIndex = 0;
-            targetIndex = -1;
+            // 초기화
+            currentDist = 0f;       // 현재 거리
+            targetDist = 100f;      // 타겟 거리
+            targetIndex = -1;       // 타겟 index
 
-            for (int i = 0; i < MonsterListInROOM.Count; i++)
+            for (int i = 0; i < monsterListInROOM.Count; i++)
             {
                 // i번쨰 몬스터와 나의 거리
-                currentDist = Vector3.Distance(transform.position, MonsterListInROOM[i].transform.position);
+                currentDist = Vector3.Distance(transform.position, monsterListInROOM[i].transform.position);
 
+                // 플레이어 - 몬스터 레이캐스트중 충돌 -> 장애물 충돌
                 RaycastHit hit;
-                bool isHit = Physics.Raycast(transform.position, MonsterListInROOM[i].transform.position - transform.position,
-                    out hit, 20f, layerMask);
+                bool isHit = Physics.Raycast(transform.position, monsterListInROOM[i].transform.position - transform.position,
+                    out hit, 20f, targetLayerMask);
 
-                if (isHit && hit.transform.CompareTag("Enemy"))
+                // 장애물에 충돌했을때 타겟팅 후보로 넣지않음.
+                if (isHit)
+                    continue;
+
+                // 가까운 거리 기준으로 타겟을 업데이트
+                if(hit.transform.CompareTag("Enemy"))
                 {
-                     if(TargetDist >= currentDist)
+                    if(targetDist >= currentDist)
                     {
                         targetIndex = i;
-                        TargetDist = currentDist;
+                        targetDist = currentDist;
                     }
                 }
-                
-                if(closeDist >= currentDist)
-                {
-                    closeDistIndex = i;
-                    closeDist = currentDist;
-                }
             }
 
-            if (targetIndex == -1)
-                targetIndex = closeDistIndex;
+            // 타겟팅중인 몬스터가 있을때 true , 없을때 false
+            getATarget = targetIndex != -1;
 
-            closeDist = 100f;
-            TargetDist = 100f;
-            getATarget = true;
-        }
-
-        if(getATarget && !JoyStickMovement.Instance.isMoveing)
-        {
-            transform.LookAt(new Vector3( MonsterListInROOM[targetIndex].transform.position.x, transform.position.y, MonsterListInROOM[targetIndex].transform.position.z));
-            Attack();
-
-            if (PlayerMovement.Instance.playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-                PlayerMovement.Instance.ChangeState(PlayerAnimatorState.ATTACK);
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        if (MonsterListInROOM.Count != 0)
-        {
-            for (int i = 0; i < MonsterListInROOM.Count; i++)
+            // 타겟이 존재하고, 움직이고있는 상태가 아닐때
+            if(getATarget && !playerJoystick.IsMoveing)
             {
-                Gizmos.DrawLine(transform.position, MonsterListInROOM[i].transform.position);
+                float rotationX = monsterListInROOM[targetIndex].transform.position.x;
+                float rotationY = transform.position.y;
+                float rotationZ = monsterListInROOM[targetIndex].transform.position.z;
+
+                transform.LookAt(new Vector3(rotationX, rotationY, rotationZ));         // 몬스터 방향 바라보기
+                Attack();                                                               // 공격 실행
+
+                playerMovement.ChangeAnimationState(PlayerAnimatorState.ATTACK);                 // 공격 애니메이션 실행
             }
+
         }
     }
+
 
     public void Attack()
     {
@@ -108,4 +92,16 @@ public class PlayerTargeting : MonoBehaviour
         bullet.transform.rotation = transform.rotation;
         bullet.transform.position = attackPoint.position;
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        if (monsterListInROOM.Count != 0)
+        {
+            for (int i = 0; i < monsterListInROOM.Count; i++)
+            {
+                Gizmos.DrawLine(transform.position, monsterListInROOM[i].transform.position);
+            }
+        }
+    }
+
 }

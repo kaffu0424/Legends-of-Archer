@@ -13,40 +13,28 @@ public enum PlayerAnimatorState
 
 public class PlayerMovement : MonoBehaviour
 {
-    public static PlayerMovement Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<PlayerMovement>();
-                if (instance == null)
-                {
-                    var instanceContainer = new GameObject("playerMovement");
-                    instance = instanceContainer.AddComponent<PlayerMovement>();
-                }
-            }
-            return instance;
-        }
-    }
-    private static PlayerMovement instance;
-
     // Move
     private Rigidbody playerRB;
     [SerializeField, Range(0, 50)] private float moveSpeed;
 
     // Animator
-    private Animator _playerAnimator;
-    public Animator playerAnimator => _playerAnimator;
+    private Animator playerAnimator;
 
     // Animation State
     private PlayerAnimatorState playerState;
     private string[] stateStrings;
 
-    void Start()
+    // JoyStick
+    private JoyStickMovement joystick;
+
+    // GET/SET
+    public Animator PlayerAnimator => playerAnimator;
+    public Rigidbody PlayerRB => playerRB;
+
+    public void InitializePlayerMovement()
     {
         playerRB = GetComponent<Rigidbody>();
-        _playerAnimator = GetComponent<Animator>();
+        playerAnimator = GetComponent<Animator>();
 
         playerState = PlayerAnimatorState.IDLE;
         stateStrings = new string[4];
@@ -54,41 +42,43 @@ public class PlayerMovement : MonoBehaviour
         stateStrings[(int)PlayerAnimatorState.WALK] = "WALK";
         stateStrings[(int)PlayerAnimatorState.DAMEGE] = "DAMEGE";
         stateStrings[(int)PlayerAnimatorState.ATTACK] = "ATTACK";
+
+        joystick = PlayerManager.Instance.JoyStickMovement;
     }
 
-    private void FixedUpdate()
+    public void PlayerMove()
     {
-        if (JoyStickMovement.Instance.joyVec.x != 0 || JoyStickMovement.Instance.joyVec.y != 0)
+
+        if (joystick.JoyVec.x != 0 || joystick.JoyVec.y != 0)
         {
-            playerRB.velocity = new Vector3(JoyStickMovement.Instance.joyVec.x * moveSpeed, playerRB.velocity.y, JoyStickMovement.Instance.joyVec.y * moveSpeed);
+
+            playerRB.velocity = new Vector3( joystick.JoyVec.x, 0, joystick.JoyVec.y) * moveSpeed;
 
             playerRB.rotation = Quaternion.LookRotation(new Vector3(
-                JoyStickMovement.Instance.joyVec.x ,0 ,JoyStickMovement.Instance.joyVec.y));
+                joystick.JoyVec.x, 0, joystick.JoyVec.y));
         }
     }
 
-    public void IdlePlayer()
+
+    public void IdlePlayerAnimation()
     {
         playerRB.velocity = Vector3.zero;
-        ChangeState(PlayerAnimatorState.IDLE);
-        // setTrigger Idle
+        ChangeAnimationState(PlayerAnimatorState.IDLE);
     }
 
-    public void WalkPlayer()
+    public void WalkPlayerAnimation()
     {
-        playerAnimator.SetTrigger("WALK");
-        ChangeState(PlayerAnimatorState.WALK);
+        ChangeAnimationState(PlayerAnimatorState.WALK);
     }
 
-    public void ChangeState(PlayerAnimatorState state)
+    public void ChangeAnimationState(PlayerAnimatorState state)
     {
-        playerAnimator.SetBool("IDLE", false);
-        playerAnimator.SetBool("WALK", false);
-        playerAnimator.SetBool("ATTACK", false);
+        PlayerAnimator.SetBool("IDLE", false);
+        PlayerAnimator.SetBool("WALK", false);
+        PlayerAnimator.SetBool("ATTACK", false);
 
         playerState = state;
 
-        playerAnimator.SetBool(stateStrings[(int)state], true);
-
+        PlayerAnimator.SetBool(stateStrings[(int)state], true);
     }
 }

@@ -5,38 +5,31 @@ using UnityEngine.EventSystems;
 
 public class JoyStickMovement : MonoBehaviour
 {
-    public static JoyStickMovement Instance
-    {
-        get
-        {
-            if(instance == null)
-            {
-                instance = FindObjectOfType<JoyStickMovement>();
-                if(instance == null)
-                {
-                    var instanceContainer = new GameObject("joystickMovement");
-                    instance = instanceContainer.AddComponent<JoyStickMovement>();
-                }
-            }
-            return instance;
-        }
-    }
-    private static JoyStickMovement instance;
+    // JoyStick
+    [SerializeField] private GameObject smallStick;
+    [SerializeField] private GameObject bgStick;
 
+    private Vector3 stickFirstPosition;                
+    private Vector3 joyStickDefalutPosition;
+    private float stickRadius;
 
-    public GameObject smallStick;
-    public GameObject bgStick;
+    // JoyStick Data
+    private Vector3 joyVec;
+    private bool isMoveing;
 
-    Vector3 stickFirstPosition;
-    Vector3 joyStickDefalutPosition;
-    public Vector3 joyVec;
-    float stickRadius;
+    // playerMovement
+    private PlayerMovement playerMovement;
 
-    public bool isMoveing;
-    private void Start()
+    // GET / SET
+    public bool IsMoveing => isMoveing;
+    public Vector3 JoyVec => joyVec;
+
+    public void InitializeJoystick()
     {
         stickRadius = bgStick.GetComponent<RectTransform>().sizeDelta.y / 2;
         joyStickDefalutPosition = bgStick.transform.position;
+
+        playerMovement = PlayerManager.Instance.PlayerMovement;
     }
 
     public void PointDown()
@@ -48,7 +41,7 @@ public class JoyStickMovement : MonoBehaviour
 
         isMoveing = true;
 
-        PlayerMovement.Instance.WalkPlayer();
+        playerMovement.WalkPlayerAnimation();
     }   
 
     public void Drag(BaseEventData baseEventData)
@@ -74,6 +67,6 @@ public class JoyStickMovement : MonoBehaviour
 
         isMoveing = false;
 
-        PlayerMovement.Instance.IdlePlayer();
+        playerMovement.IdlePlayerAnimation();
     }
 }
