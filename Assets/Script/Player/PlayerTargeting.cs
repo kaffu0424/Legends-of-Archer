@@ -5,21 +5,16 @@ using UnityEngine;
 
 public class PlayerTargeting : MonoBehaviour
 {
+    private float currentDist = 0;     // 현재 거리
+    private float targetDist = 100f;   // 타겟 거리
+    private int targetIndex = -1;      // 타겟 index
+    private float closeDist = 100f;    // 가장 가까운 거리
+    private int closeDistIndex = 0;    // 가장 가까운 index
+
     [SerializeField] private bool getATarget = false;   // 타겟팅중인 몬스터가 있는지에 대한 여부
-
-    [SerializeField] private float currentDist = 0;     // 현재 거리
-
-    [SerializeField] private float targetDist = 100f;   // 타겟 거리
-    [SerializeField] private int targetIndex = -1;      // 타겟 index
-
-    [SerializeField] private float closeDist = 100f;    // 가장 가까운 거리
-    [SerializeField] private int closeDistIndex = 0;    // 가장 가까운 index
-
-
-    [SerializeField] private LayerMask layerMask; // 장애물 레이어
-
     [SerializeField] private Room currentRoomData;
 
+    [SerializeField] private LayerMask layerMask; // 장애물 레이어
     [SerializeField] private GameObject playerBullet;
     [SerializeField] private Transform attackPoint;
 
@@ -110,8 +105,8 @@ public class PlayerTargeting : MonoBehaviour
 
     public void Attack()
     {
-        //GameObject bullet = Instantiate(playerBullet);
-        //bullet.transform.rotation = transform.rotation;
-        //bullet.transform.position = attackPoint.position;
+        GameObject bullet = Instantiate(playerBullet);
+        bullet.transform.rotation = transform.rotation;
+        bullet.transform.position = attackPoint.position;
     }
 }

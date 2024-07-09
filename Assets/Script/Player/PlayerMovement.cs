@@ -57,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
+    #region Animation
     public void IdlePlayerAnimation()
     {
         playerRB.velocity = Vector3.zero;
@@ -78,5 +78,14 @@ public class PlayerMovement : MonoBehaviour
         playerState = state;
 
         PlayerAnimator.SetBool(stateStrings[(int)state], true);
+    }
+    #endregion
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("NextStage"))
+        {
+            StageManager.Instance.NextStage();
+        }
     }
 }

@@ -4,30 +4,38 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    public List<GameObject> monsterListInROOM;    // 해당 방의 몬스터 리스트
+    public List<GameObject> monsterListInROOM;              // 해당 방의 몬스터 리스트
+    [SerializeField] private Transform playerSpawnPoint;    // 플레이어 입장시 스폰 위치
 
-    [SerializeField] private bool playerInROOM;      // 플레이어 입장 여부
-    [SerializeField] private bool isClearROOM;       // 클리어 여부
-
-
-    void Start()
-    {
-        //monsterListInROOM = new List<GameObject>();
-
-        playerInROOM = true;
-        isClearROOM = false;
-    }
+    [Header("Room State")]
+    public bool playerInROOM;     // 플레이어 입장 여부
+    public bool isClearROOM;      // 클리어 여부
+    public RoomType roomType;     // 방 타입
 
     private void Update()
     {
-
+        // 플레이어 방에 있을때만
+        if(playerInROOM)
+        {
+            // 클리어 되지않았을때
+            if(!isClearROOM)
+            {
+                // 현재 방에 남은 몬스터가 없을때
+                if(monsterListInROOM.Count == 0)
+                {
+                    // 방을 클리어 상태로 전환
+                    isClearROOM = true;
+                }
+            }
+        }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void JoinPlayer(ref Room currentRoom)
     {
-        if(other.CompareTag("Player"))
-        {
-            PlayerManager.Instance.PlayerTargeting.CurrentRoomData = this;
-        }
+        PlayerManager.Instance.playerTransform.position = playerSpawnPoint.position;
+        PlayerManager.Instance.PlayerTargeting.CurrentRoomData = this;
+        currentRoom = this;
+
+        playerInROOM = true;
     }
 }
