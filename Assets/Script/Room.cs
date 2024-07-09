@@ -6,11 +6,17 @@ public class Room : MonoBehaviour
 {
     public List<GameObject> monsterListInROOM;              // 해당 방의 몬스터 리스트
     [SerializeField] private Transform playerSpawnPoint;    // 플레이어 입장시 스폰 위치
+    [SerializeField] private Transform enemyParent;
 
     [Header("Room State")]
     public bool playerInROOM;     // 플레이어 입장 여부
     public bool isClearROOM;      // 클리어 여부
     public RoomType roomType;     // 방 타입
+
+    private void Start()
+    {
+        
+    }
 
     private void Update()
     {

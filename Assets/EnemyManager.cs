@@ -2,17 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour
+public enum EnemyName
 {
-    // Start is called before the first frame update
-    void Start()
+    Duck,
+}
+
+public class EnemyManager : Singleton<EnemyManager>
+{
+    [SerializeField] List<GameObject> enemyPrefabs;
+
+    protected override void InitManager()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public GameObject GetEnemy(EnemyName enemyName)
     {
-        
+        return enemyPrefabs[(int)enemyName];
     }
 }
