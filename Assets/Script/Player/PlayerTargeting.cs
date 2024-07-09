@@ -35,6 +35,7 @@ public class PlayerTargeting : MonoBehaviour
     private void Update()
     {
         Targeting();
+        AttackTarget();
     }
 
     public void Targeting()
@@ -87,7 +88,10 @@ public class PlayerTargeting : MonoBehaviour
             targetDist = 100f;
             getATarget = true;
         }
+    }
 
+    public void AttackTarget()
+    {
         // 타겟이 존재하고, 움직이고있는 상태가 아닐때
         if (getATarget && !playerJoystick.IsMoveing)
         {
@@ -95,18 +99,15 @@ public class PlayerTargeting : MonoBehaviour
             float rotationY = transform.position.y;
             float rotationZ = CurrentRoomData.monsterListInROOM[targetIndex].transform.position.z;
 
-            transform.LookAt(new Vector3(rotationX, rotationY, rotationZ));         // 몬스터 방향 바라보기
-            Attack();                                                               // 공격 실행
+            transform.LookAt(new Vector3(rotationX, rotationY, rotationZ));     // 몬스터 방향 바라보기
 
-            playerMovement.ChangeAnimationState(PlayerAnimatorState.ATTACK);                 // 공격 애니메이션 실행
+            playerMovement.ChangeAnimationState(PlayerAnimatorState.ATTACK);    // 공격 애니메이션 실행
         }
     }
 
-
     public void Attack()
     {
-        GameObject bullet = Instantiate(playerBullet);
-        bullet.transform.rotation = transform.rotation;
-        bullet.transform.position = attackPoint.position;
+        playerMovement.PlayerAnimator.SetFloat("AtkSpeed", PlayerManager.Instance.PlayerStat.atkSpeed);
+        Instantiate(playerBullet, attackPoint.position, transform.rotation);
     }
 }
