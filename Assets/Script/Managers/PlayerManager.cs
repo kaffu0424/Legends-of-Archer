@@ -6,17 +6,27 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerStat
 {
+    // 공격 속도
     public float atkSpeed;
+
+    // 체력
+    public float maxHP;
+    public float currentHP;
+
+    // 경험치
+    public float maxEXP;
+    public float currentEXP;
 
     public PlayerStat()
     {
+        maxHP = 1000f;
+        currentHP = maxHP;
         atkSpeed = 1.0f;
+
+        maxEXP = 1000f;
+        currentHP = 0;
     }
 
-    /// <summary> 
-    /// value 1.0 -> 1배 ( 변동 X )  value 2.0 -> 2배
-    /// 현재 공격속도 기준으로 곱해짐
-    /// </summary>
     public void MultiplyAtkSpeed(float value)
     {
         atkSpeed *= value;
@@ -25,6 +35,18 @@ public class PlayerStat
         // 공속 제한
         if(atkSpeed > 10000f)
             atkSpeed = 10000;
+    }
+
+    public void GetDamage(float damage)
+    {
+        currentHP -= damage;
+
+        if(currentHP <= 0)
+        {
+            currentHP = 0;
+
+            Debug.Log("사망");
+        }
     }
 }
 
