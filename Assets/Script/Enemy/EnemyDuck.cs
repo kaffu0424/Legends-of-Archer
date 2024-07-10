@@ -19,6 +19,8 @@ public class EnemyDuck : Enemy
         navMeshAgent.speed = enemyStat.moveSpeed;               // 이동 속도 설정
 
         canAttack = true;
+
+        hpbar.UpdateHPbar(enemyStat.enemyCurrentHP, enemyStat.enemyMaxHP);
     }
     public override void Attack()
     {

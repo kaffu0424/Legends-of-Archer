@@ -5,20 +5,16 @@ using UnityEngine;
 public class HpbarPosition : MonoBehaviour
 {
     Vector3 offsetRotation;
-    Vector3 offsetPosition;
 
     void Start()
     {
-        offsetPosition = transform.position;
+        // 초기화
         offsetRotation = transform.rotation.eulerAngles;
-
-        Debug.Log(offsetRotation);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void LateUpdate()
     {
-        transform.position = transform.parent.position + offsetPosition;
+        // Rotation값 고정시키기
         transform.rotation = Quaternion.Euler(offsetRotation);
     }
 }

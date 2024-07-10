@@ -56,12 +56,14 @@ public abstract class Enemy : MonoBehaviour
     // components
     protected NavMeshAgent navMeshAgent;
     protected Animator animator;
+    protected EnemyHPbar hpbar;
 
     // RoomData
     public Room currentRoom;
     
     // GET / SET
     public Animator Animator => animator;
+    public EnemyStat EnemyStat => enemyStat;
     private void Start()
     {
         // FSM 초기화
@@ -73,6 +75,7 @@ public abstract class Enemy : MonoBehaviour
         // Component
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        hpbar = GetComponentInChildren<EnemyHPbar>();
 
         // 몬스터 초기화 함수
         InitializeEnemy();
@@ -122,7 +125,8 @@ public abstract class Enemy : MonoBehaviour
     {
         enemyStat.enemyCurrentHP -= value;
 
-        if(enemyStat.enemyCurrentHP <= 0 )
+        hpbar.UpdateHPbar(enemyStat.enemyCurrentHP, enemyStat.enemyMaxHP);
+        if (enemyStat.enemyCurrentHP <= 0 )
         {
             enemyStat.enemyCurrentHP = 0;
 
