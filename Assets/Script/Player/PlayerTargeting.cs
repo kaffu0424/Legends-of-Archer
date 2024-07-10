@@ -88,6 +88,10 @@ public class PlayerTargeting : MonoBehaviour
             targetDist = 100f;
             getATarget = true;
         }
+        else
+        {
+            getATarget = false;
+        }
     }
 
     public void AttackTarget()

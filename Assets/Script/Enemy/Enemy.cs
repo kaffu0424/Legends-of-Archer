@@ -42,7 +42,7 @@ public class EnemyStat
 public abstract class Enemy : MonoBehaviour
 {
     //Stat
-    protected EnemyStat enemyStat;
+    [SerializeField] protected EnemyStat enemyStat;
 
     // Tracking
     [SerializeField] protected LayerMask targetLayer;
@@ -57,6 +57,9 @@ public abstract class Enemy : MonoBehaviour
     protected NavMeshAgent navMeshAgent;
     protected Animator animator;
 
+    // RoomData
+    public Room currentRoom;
+    
     // GET / SET
     public Animator Animator => animator;
     private void Start()
@@ -113,5 +116,19 @@ public abstract class Enemy : MonoBehaviour
         }
         trackingTarget = null;                         // 오브젝트가 감지되지않았을때 타겟을 null
         return false;
+    }
+
+    public void GetDamage(float value)
+    {
+        enemyStat.enemyCurrentHP -= value;
+
+        if(enemyStat.enemyCurrentHP <= 0 )
+        {
+            enemyStat.enemyCurrentHP = 0;
+
+            // 사망 처리
+            currentRoom.RemoveEnemy(this.gameObject);
+            Destroy(this.gameObject, 0.05f);
+        }
     }
 }

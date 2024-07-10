@@ -27,16 +27,6 @@ public class PlayerHPbar : MonoBehaviour
     {
         HPbarMove();
         HPbarUpdate();
-
-        //if(Input.GetKeyDown(KeyCode.E))
-        //{
-        //    GetHPBoost();
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.R))
-        //{
-        //    playerStat.GetDamage(80);
-        //}
     }
 
     private void HPbarMove()
@@ -50,11 +40,8 @@ public class PlayerHPbar : MonoBehaviour
         playerHPTEXT.text = ((int)playerStat.currentHP).ToString(); // 체력 텍스트
     }
 
-    public void GetHPBoost()
+    public void UpdateMaxHP()
     {
-        playerStat.maxHP += 150;
-        playerStat.currentHP += 150;
-
         float scaleX = (1000f / unitHP) / ((float)playerStat.maxHP / unitHP);
 
         lineHPLayoutGroupComponent.gameObject.SetActive(false);

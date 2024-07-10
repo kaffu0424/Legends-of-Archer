@@ -75,6 +75,9 @@ public class StageManager : Singleton<StageManager>
 
         }
 
+        // 기존 방의 플레이어 입장상태를 false
+        currentRoom.playerInROOM = false;
+
         // 랜덤 번호의 방으로 입장
         roomIndex = Random.Range(0, stages[stageLEVEL].rooms.Count);
         stages[stageLEVEL].rooms[roomIndex].JoinPlayer(ref currentRoom);

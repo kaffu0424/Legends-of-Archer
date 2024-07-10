@@ -8,6 +8,7 @@ public class EnemyDuck : Enemy
 {
     [SerializeField] private bool canAttack;
 
+    [SerializeField] private ParticleSystem attackEffect;
     protected override void InitializeEnemy()
     {
         enemyStat = new EnemyStat(100);     // 체력 초기화
@@ -27,7 +28,17 @@ public class EnemyDuck : Enemy
             StartCoroutine(AttackDelay());
 
             // 공격 기능
-            Debug.Log("공격!");
+            attackEffect.Play();    // 공격 이펙트
+            Collider[] colliders = Physics.OverlapSphere(transform.position, enemyStat.attackRange, targetLayer);
+            foreach(Collider collider in colliders)
+            {
+                if(collider.CompareTag("Player"))
+                {
+                    // 몬스터 공격력 스탯 추가하기.
+                    PlayerManager.Instance.PlayerStat.GetDamage(100);
+                }
+            }
+
         }
 
         else
@@ -102,5 +113,13 @@ public class EnemyDuck : Enemy
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, enemyStat.attackRange);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Bullet"))
+        {
+            GetDamage(PlayerManager.Instance.PlayerStat.damage);
+        }
     }
 }

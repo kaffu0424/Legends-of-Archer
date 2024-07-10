@@ -9,6 +9,9 @@ public class PlayerStat
     // 공격 속도
     public float atkSpeed;
 
+    // 데미지
+    public float damage;
+
     // 체력
     public float maxHP;
     public float currentHP;
@@ -19,9 +22,12 @@ public class PlayerStat
 
     public PlayerStat()
     {
+        atkSpeed = 1.0f;
+
+        damage = 30f;
+
         maxHP = 1000f;
         currentHP = 1000f;
-        atkSpeed = 1.0f;
 
         maxEXP = 1000f;
         currentEXP = 0;
@@ -45,8 +51,15 @@ public class PlayerStat
         {
             currentHP = 0;
 
+            // 사망 처리 추가하기.
             Debug.Log("사망");
         }
+    }
+
+    public void GetHPBoost()
+    {
+        maxHP += 150;
+        currentHP += 150;
     }
 }
 
@@ -66,7 +79,12 @@ public class PlayerManager : Singleton<PlayerManager>
     // Camera
     [SerializeField] private CameraMovement cameraMovement;
 
+    // HP bar
+    [SerializeField] private PlayerHPbar playerHPbar;
+
+    // Player Stat
     [SerializeField] private PlayerStat playerStat;
+
     // GET/SET
     public JoyStickMovement JoyStickMovement => joyStickMovement;
     public PlayerMovement PlayerMovement => playerMovement;
@@ -81,5 +99,11 @@ public class PlayerManager : Singleton<PlayerManager>
         playerMovement.InitializePlayerMovement();      // 플레이어 움직임 스크립트 초기화
         joyStickMovement.InitializeJoystick();          // 플레이어 조이스틱 스크립트 초기화
         playerTargeting.InitializePlayerTargeting();    // 플레이어 타겟팅/공격 스크립트 초기화        
+    }
+
+    public void GetHP()
+    {
+        playerStat.GetHPBoost();        // 최대체력 / 현재 체력 추가
+        playerHPbar.UpdateMaxHP();      // 추가된 체력에 맞춰 체력바 업데이트
     }
 }
