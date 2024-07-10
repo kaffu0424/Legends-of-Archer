@@ -11,17 +11,16 @@ public class Attack : EnemyFSM
 
     public override void Enter()
     {
-        Debug.Log("Attack enter");
+        enemy.Animator.SetBool("Attack", true);
     }
 
     public override void Excute()
     {
-        Debug.Log("Attack Excute");
-        Debug.Log("name : " + enemy.gameObject.name);
+        enemy.Attack();
     }
 
     public override void Exit()
     {
-        Debug.Log("Attack Exit");
+        enemy.Animator.SetBool("Attack", false);
     }
 }

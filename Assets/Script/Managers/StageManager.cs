@@ -47,6 +47,9 @@ public class StageManager : Singleton<StageManager>
 
     public void NextStage()
     {
+        if (!currentRoom.isClearROOM)
+            return;
+
         // 현재 위치가 시작방일때
         if(currentRoom.roomType == RoomType.START)
             stageIndex = 0;

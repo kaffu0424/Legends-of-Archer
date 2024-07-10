@@ -20,14 +20,18 @@ public class Room : MonoBehaviour
 
     private void Update()
     {
+        CheckRoomState();
+    }
+    private void CheckRoomState()
+    {
         // 플레이어 방에 있을때만
-        if(playerInROOM)
+        if (playerInROOM)
         {
             // 클리어 되지않았을때
-            if(!isClearROOM)
+            if (!isClearROOM)
             {
                 // 현재 방에 남은 몬스터가 없을때
-                if(monsterListInROOM.Count == 0)
+                if (monsterListInROOM.Count == 0)
                 {
                     // 방을 클리어 상태로 전환
                     isClearROOM = true;
@@ -35,7 +39,6 @@ public class Room : MonoBehaviour
             }
         }
     }
-
     public void JoinPlayer(ref Room currentRoom)
     {
         PlayerManager.Instance.playerTransform.position = playerSpawnPoint.position;
@@ -43,5 +46,15 @@ public class Room : MonoBehaviour
         currentRoom = this;
 
         playerInROOM = true;
+    }
+
+    public void RemoveEnemy(GameObject enemy)
+    {
+        monsterListInROOM.Remove(enemy);
+    }
+
+    public void SpawnEnemy()
+    {
+
     }
 }

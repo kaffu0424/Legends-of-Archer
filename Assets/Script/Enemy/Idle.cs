@@ -11,17 +11,18 @@ public class Idle : EnemyFSM
 
     public override void Enter()
     {
-        Debug.Log("Idle enter");
+        enemy.Animator.SetBool("Idle", true);
+        enemy.Animator.SetBool("Tracking", false);
+        enemy.Animator.SetBool("Attack", false);
     }
 
     public override void Excute()
     {
-        Debug.Log("Idle Excute");
-        Debug.Log("name : " + enemy.gameObject.name);
+        enemy.Idle();
     }
 
     public override void Exit()
     {
-        Debug.Log("Idle Exit");
+        enemy.Animator.SetBool("Idle", false);
     }
 }

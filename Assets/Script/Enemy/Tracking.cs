@@ -11,17 +11,16 @@ public class Tracking : EnemyFSM
 
     public override void Enter()
     {
-        Debug.Log("Tracking enter");
+        enemy.Animator.SetBool("Tracking", true);
     }
 
     public override void Excute()
     {
-        Debug.Log("Tracking Excute");
-        Debug.Log("name : " + enemy.gameObject.name);
+        enemy.Tracking();
     }
 
     public override void Exit()
     {
-        Debug.Log("Tracking Exit");
+        enemy.Animator.SetBool("Tracking", false);
     }
 }

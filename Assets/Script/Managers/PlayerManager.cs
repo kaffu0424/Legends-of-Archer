@@ -20,11 +20,11 @@ public class PlayerStat
     public PlayerStat()
     {
         maxHP = 1000f;
-        currentHP = maxHP;
+        currentHP = 1000f;
         atkSpeed = 1.0f;
 
         maxEXP = 1000f;
-        currentHP = 0;
+        currentEXP = 0;
     }
 
     public void MultiplyAtkSpeed(float value)
