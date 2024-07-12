@@ -9,8 +9,8 @@ public enum EnemyName
 
 public class EnemyManager : Singleton<EnemyManager>
 {
-    [SerializeField] List<GameObject> enemyPrefabs;
-
+    [SerializeField] private List<GameObject> enemyPrefabs;
+    [SerializeField] private GameObject enemyBullet;
     protected override void InitManager()
     {
         
@@ -19,5 +19,10 @@ public class EnemyManager : Singleton<EnemyManager>
     public GameObject GetEnemy(EnemyName enemyName)
     {
         return enemyPrefabs[(int)enemyName];
+    }
+
+    public GameObject GetEnemyBullet()
+    {
+        return enemyBullet;
     }
 }

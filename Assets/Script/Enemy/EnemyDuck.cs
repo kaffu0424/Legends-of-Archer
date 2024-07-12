@@ -116,12 +116,4 @@ public class EnemyDuck : Enemy
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, enemyStat.attackRange);
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.CompareTag("Bullet"))
-        {
-            GetDamage(PlayerManager.Instance.PlayerStat.damage);
-        }
-    }
 }

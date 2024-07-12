@@ -121,6 +121,7 @@ public abstract class Enemy : MonoBehaviour
         return false;
     }
 
+    #region 플레이어에게 공격받았을때
     public void GetDamage(float value)
     {
         enemyStat.enemyCurrentHP -= value;
@@ -135,4 +136,14 @@ public abstract class Enemy : MonoBehaviour
             Destroy(this.gameObject, 0.05f);
         }
     }
+
+    // 플레이어에게 맞았을때
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bullet"))
+        {
+            GetDamage(PlayerManager.Instance.PlayerStat.damage);
+        }
+    }
+    #endregion
 }
