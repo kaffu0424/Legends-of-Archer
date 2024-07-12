@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7981399280839772939}
   - component: {fileID: 7026047574710449795}
   m_Layer: 30
-  m_Name: EnemuBullet
+  m_Name: EnemyBullet 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b96915ad8a41b474dbdebd4ab28d6453, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 1
 --- !u!54 &7026047574710449795
 Rigidbody:
   m_ObjectHideFlags: 0

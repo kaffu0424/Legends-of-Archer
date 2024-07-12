@@ -19,8 +19,8 @@ public class EnemyPenguin : Enemy
 
         enemyStat.attackDelay = 3f;     // 공격 쿨타임 3초
 
-        navMeshAgent.stoppingDistance = enemyStat.attackRange;  // 공격 범위에서 멈추는 값
-        navMeshAgent.speed = enemyStat.moveSpeed;               // 이동속도 설정
+        //navMeshAgent.stoppingDistance = enemyStat.attackRange;  // 공격 범위에서 멈추는 값
+        //navMeshAgent.speed = enemyStat.moveSpeed;               // 이동속도 설정
 
         canAttack = true;
 
@@ -100,7 +100,7 @@ public class EnemyPenguin : Enemy
 
     private void ShootBullet()
     {
-        Instantiate(EnemyManager.Instance.GetEnemyBullet(), bulletPosition.position, transform.rotation);
+        Instantiate(EnemyManager.Instance.GetEnemyBullet(BulletType.Three), bulletPosition.position, transform.rotation);
     }
 
     public override void Attack()

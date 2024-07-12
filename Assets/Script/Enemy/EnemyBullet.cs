@@ -7,12 +7,24 @@ public class EnemyBullet : MonoBehaviour
     Rigidbody rb;
     Vector3 newDir;
 
-    int bounceCnt = 3;
+    int bounceCnt;
+
+    [SerializeField] private BulletType type;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         newDir = transform.forward;
         rb.velocity = transform.forward * 10;
+
+        switch(type)
+        {
+            case BulletType.One:
+                bounceCnt = 0;
+                break;
+            case BulletType.Three:
+                bounceCnt = 3;
+                break;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
