@@ -7,6 +7,7 @@ public enum EnemyName
     Duck,
     Penguin,
     Sheep,
+    Cat
 }
 
 public enum BulletType

@@ -3450,6 +3450,7 @@ MonoBehaviour:
   - {fileID: 1442061532582192024, guid: c40d32f830f956145817b3429b58f19c, type: 3}
   - {fileID: 4502114140851744084, guid: b73246f2542ff294c8192abff4649c56, type: 3}
   - {fileID: 1867935578082654161, guid: 1db7e685bd0f31048bfeca9a687fc726, type: 3}
+  - {fileID: 7016573786017791548, guid: 63d98957c6b29254fba2e3ebe8b4b5dc, type: 3}
   enemyBullets:
   - {fileID: 8436603908934371218, guid: 185d623bf2f6ac741a5eb6a7533f3255, type: 3}
   - {fileID: 8436603908934371218, guid: bdece7f568ad2d745b9e1e6de4c2c2e9, type: 3}

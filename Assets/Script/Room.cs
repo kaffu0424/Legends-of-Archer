@@ -61,7 +61,7 @@ public class Room : MonoBehaviour
     {
         foreach(Transform spawnPoint in  enemySpawnPoints)
         {
-            EnemyName name = (EnemyName)Random.Range(0, 3);
+            EnemyName name = (EnemyName)Random.Range(0, 4);
             GameObject enemy = Instantiate(EnemyManager.Instance.GetEnemy(name), enemyParent);
             enemy.transform.position = spawnPoint.position;
 
