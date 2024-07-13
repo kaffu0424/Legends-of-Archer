@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 7850137180141212490}
   - component: {fileID: 639808288155719585}
   - component: {fileID: -7861722522852281948}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Potato
   m_TagString: Bullet
   m_Icon: {fileID: 0}

@@ -61,7 +61,8 @@ public class Room : MonoBehaviour
     {
         foreach(Transform spawnPoint in  enemySpawnPoints)
         {
-            GameObject enemy = Instantiate(EnemyManager.Instance.GetEnemy(EnemyName.Duck), enemyParent);
+            EnemyName name = (EnemyName)Random.Range(0, 4);
+            GameObject enemy = Instantiate(EnemyManager.Instance.GetEnemy(name), enemyParent);
             enemy.transform.position = spawnPoint.position;
 
             monsterListInROOM.Add(enemy);

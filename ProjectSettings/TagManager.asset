@@ -39,8 +39,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - EnemyBullet
+  - PlayerBullet
   m_SortingLayers:
   - name: Default
     uniqueID: 0

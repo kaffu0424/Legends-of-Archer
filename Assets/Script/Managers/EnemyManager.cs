@@ -5,12 +5,21 @@ using UnityEngine;
 public enum EnemyName
 {
     Duck,
+    Penguin,
+    Sheep,
+    Cat
+}
+
+public enum BulletType
+{
+    One,
+    Three
 }
 
 public class EnemyManager : Singleton<EnemyManager>
 {
-    [SerializeField] List<GameObject> enemyPrefabs;
-
+    [SerializeField] private List<GameObject> enemyPrefabs;
+    [SerializeField] private List<GameObject> enemyBullets;
     protected override void InitManager()
     {
         
@@ -19,5 +28,10 @@ public class EnemyManager : Singleton<EnemyManager>
     public GameObject GetEnemy(EnemyName enemyName)
     {
         return enemyPrefabs[(int)enemyName];
+    }
+
+    public GameObject GetEnemyBullet(BulletType type)
+    {
+        return enemyBullets[(int)type];
     }
 }

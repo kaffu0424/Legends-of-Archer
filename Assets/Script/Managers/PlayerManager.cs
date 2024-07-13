@@ -54,6 +54,8 @@ public class PlayerStat
             // 사망 처리 추가하기.
             Debug.Log("사망");
         }
+
+        PlayerManager.Instance.PlayerMovement.PlayerAnimator.SetTrigger("DAMAGE");
     }
 
     public void GetHPBoost()
@@ -101,7 +103,7 @@ public class PlayerManager : Singleton<PlayerManager>
         playerTargeting.InitializePlayerTargeting();    // 플레이어 타겟팅/공격 스크립트 초기화        
     }
 
-    public void GetHP()
+    public void GetHPBoost()
     {
         playerStat.GetHPBoost();        // 최대체력 / 현재 체력 추가
         playerHPbar.UpdateMaxHP();      // 추가된 체력에 맞춰 체력바 업데이트
