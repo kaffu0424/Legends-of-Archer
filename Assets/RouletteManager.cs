@@ -5,11 +5,14 @@ using UnityEngine.UI;
 
 public class RouletteManager : Singleton<RouletteManager>
 {
+    [Header("public")]
+    [SerializeField] Sprite[] skillSprites;
+
+    [Header("Roulette")]
     [SerializeField] private GameObject rouletteUI;     // 룰렛 UI
     [SerializeField] private GameObject roulettePlate;  // 돌림판
     [SerializeField] private Transform needle;          // 화살표
 
-    [SerializeField] Sprite[] skillSprites;
     [SerializeField] Image[] displaySlots;
 
     private List<int> startList;
@@ -17,15 +20,20 @@ public class RouletteManager : Singleton<RouletteManager>
 
     int itemCount = 6;
 
+    [Header("SlotMachine")]
+    [SerializeField] private GameObject slotMachineUI;      // 슬롯머신 UI
+    [SerializeField] private SlotMachineItem[] slotItems;
     protected override void InitManager()
     {
         startList = new List<int>();
         resultIndexList = new List<int>();
 
-        RouletteReset();
+        // RouletteSpin();
+        // StartCoroutine(SlotMachineSpin());
     }
 
-    private void RouletteReset()
+    #region 룰렛
+    private void RouletteSpin()
     {
         for(int i = 0; i < itemCount; i++) 
         { 
@@ -87,11 +95,39 @@ public class RouletteManager : Singleton<RouletteManager>
             }
         }
 
+        // 예외처리
         if(closetDistance == -1)
-        {
-            Debug.Log(" something is wrong! ");
             return;
-        }
+
         displaySlots[itemCount].sprite = displaySlots[closetIndex].sprite;
     }
+    #endregion
+
+    #region 슬롯머신
+    public IEnumerator SlotMachineSpin()
+    {
+
+        // 슬롯머신 활성화
+        slotMachineUI.SetActive(true);  
+
+        // 슬롯 이미지 초기화
+        foreach(SlotMachineItem item in slotItems)
+        {
+            int spriteIndex = Random.Range(0, skillSprites.Length);
+            item.InitializeSlot(spriteIndex, ref skillSprites);
+        }
+        yield return new WaitForSeconds(0.5f);
+
+        // 돌리기
+        foreach(SlotMachineItem item in slotItems)
+        {
+            StartCoroutine(item.Spin());
+        }
+    }
+
+    public void ChoiceSlotSkill(int skillIndex)
+    {
+        Debug.Log(skillIndex + " 번 스킬이 선택됨");
+    }
+    #endregion
 }
