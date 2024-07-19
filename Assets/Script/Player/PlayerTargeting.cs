@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class PlayerTargeting : MonoBehaviour
 {
+    delegate void AttackDelegate();
+    AttackDelegate AttackDelegatechain;
+
+
     private float currentDist = 0;     // 현재 거리
     private float targetDist = 100f;   // 타겟 거리
     private int targetIndex = -1;      // 타겟 index
@@ -30,6 +34,10 @@ public class PlayerTargeting : MonoBehaviour
         playerJoystick = PlayerManager.Instance.JoyStickMovement;
 
         getATarget = false;
+
+        AttackDelegatechain += DefaultAttack;
+        AttackDelegatechain += AddStraightAttack;
+        AttackDelegatechain += AddDiagonalAttack;
     }
 
     private void Update()
@@ -111,7 +119,69 @@ public class PlayerTargeting : MonoBehaviour
 
     public void Attack()
     {
+        StartCoroutine(AttackCoroutine());
+    }
+
+    IEnumerator AttackCoroutine()
+    {
+        // multiAttack 스킬 먹은 횟수 + 기본 공격 횟수 1
+        int attackCount = PlayerManager.Instance.PlayerStat.skills[(int)SkillName.MultiAttack] + 1;
+
+        for (int i = 0; i < attackCount; i++)
+        {
+            AttackDelegatechain();
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        yield return null;
+    }
+
+    // 공격 기본
+    private void DefaultAttack()
+    {
         playerMovement.PlayerAnimator.SetFloat("AtkSpeed", PlayerManager.Instance.PlayerStat.atkSpeed);
-        Instantiate(playerBullet, attackPoint.position, transform.rotation);
+        Instantiate(playerBullet, attackPoint.position, transform.rotation, attackPoint);
+    }
+
+    // 직선 화살 추가
+    private void AddStraightAttack()
+    {
+        int bulletCount = PlayerManager.Instance.PlayerStat.skills[(int)SkillName.AddStraight];
+        float startPositionX = bulletCount / 2 * -0.30f;
+
+        for (int i = 0; i < bulletCount; i++)
+        {
+            if (-0.01f <= startPositionX && startPositionX <= 0.01f)
+            {
+                i--;
+                startPositionX += 0.30f;
+                continue;
+            }
+
+            Instantiate(playerBullet, attackPoint.position, transform.rotation, attackPoint).transform.localPosition
+                += new Vector3(startPositionX, 0, 0);
+
+            startPositionX += 0.30f;
+        }
+    }
+
+    // 사선 화살 추가
+    private void AddDiagonalAttack()
+    {
+        int bulletCount = PlayerManager.Instance.PlayerStat.skills[(int)SkillName.AddDiagonal];
+
+        float rotationY_1 = 90f;
+        float rotationY_2 = 45f;
+
+        for(int i = 0; i < bulletCount; i++)
+        {
+            Instantiate(playerBullet, attackPoint.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, rotationY_1, 0)), attackPoint);
+            Instantiate(playerBullet, attackPoint.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, rotationY_2, 0)), attackPoint);
+            Instantiate(playerBullet, attackPoint.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, -rotationY_1, 0)), attackPoint);
+            Instantiate(playerBullet, attackPoint.position, Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, -rotationY_2, 0)), attackPoint);
+
+            rotationY_1 -= 5;
+            rotationY_2 -= 5;
+        }
     }
 }

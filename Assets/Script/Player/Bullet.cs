@@ -14,13 +14,13 @@ public class Bullet : MonoBehaviour
         if(other.CompareTag("Obstacle"))
         {
             GetComponent<Rigidbody>().velocity = Vector3.zero;
-            Destroy(gameObject, 0.2f);
+            Destroy(gameObject);
         }
 
         else if(other.CompareTag("Enemy"))
         {
             GetComponent<Rigidbody>().velocity = Vector3.zero;
-            Destroy(gameObject, 0.2f);
+            Destroy(gameObject);
         }
     }
 
@@ -29,13 +29,13 @@ public class Bullet : MonoBehaviour
         if (collision.gameObject.CompareTag("Obstacle"))
         {
             GetComponent<Rigidbody>().velocity = Vector3.zero;
-            Destroy(gameObject, 0.2f);
+            Destroy(gameObject);
         }
 
         else if (collision.gameObject.CompareTag("Enemy"))
         {
             GetComponent<Rigidbody>().velocity = Vector3.zero;
-            Destroy(gameObject, 0.2f);
+            Destroy(gameObject);
         }
     }
 }

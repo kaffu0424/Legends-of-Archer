@@ -52,8 +52,7 @@ public class PlayerMovement : MonoBehaviour
         {
             playerRB.velocity = new Vector3(joystick.JoyVec.x, 0, joystick.JoyVec.y) * moveSpeed;
 
-            playerRB.rotation = Quaternion.LookRotation(new Vector3(
-                joystick.JoyVec.x, 0, joystick.JoyVec.y));
+            playerRB.rotation = Quaternion.LookRotation(new Vector3(joystick.JoyVec.x, 0, joystick.JoyVec.y));
         }
     }
 
@@ -77,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
 
         playerState = state;
 
-        PlayerAnimator.SetBool(stateStrings[(int)state], true);
+        PlayerAnimator.SetBool(stateStrings[(int)playerState], true);
     }
     #endregion
 

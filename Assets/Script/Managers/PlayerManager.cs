@@ -1,7 +1,17 @@
 using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+public enum SkillName
+{
+    EnemyBounce,    // 몬스터 튕기기      
+    MultiAttack,    // 총알 한번 더 쏘기  - 완료
+    AddStraight,    // 직선 화살 추가     - 완료
+    AddDiagonal,    // 사선 화살 추가     - 완료
+    Bounce          // 벽 튕기기
+}
 
 [System.Serializable]
 public class PlayerStat
@@ -20,6 +30,8 @@ public class PlayerStat
     public float maxEXP;
     public float currentEXP;
 
+    public int[] skills;
+
     public PlayerStat()
     {
         atkSpeed = 1.0f;
@@ -31,17 +43,10 @@ public class PlayerStat
 
         maxEXP = 1000f;
         currentEXP = 0;
+
+        skills = new int[Enum.GetValues(typeof(SkillName)).Length];
     }
 
-    public void MultiplyAtkSpeed(float value)
-    {
-        atkSpeed *= value;
-
-
-        // 공속 제한
-        if(atkSpeed > 10000f)
-            atkSpeed = 10000;
-    }
 
     public void GetDamage(float damage)
     {
@@ -58,10 +63,27 @@ public class PlayerStat
         PlayerManager.Instance.PlayerMovement.PlayerAnimator.SetTrigger("DAMAGE");
     }
 
+    // 최대체력 증가
     public void GetHPBoost()
     {
         maxHP += 150;
         currentHP += 150;
+    }
+
+    // 공속 증가
+    public void MultiplyAtkSpeed(float value)
+    {
+        atkSpeed *= value;
+
+        // 공속 제한
+        if(atkSpeed > 10000f)
+            atkSpeed = 10000;
+    }
+
+    // 공격력 증가
+    public void GetDamageBoost(float value)
+    {
+        damage *= value;
     }
 }
 
