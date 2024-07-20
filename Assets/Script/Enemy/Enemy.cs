@@ -138,12 +138,14 @@ public abstract class Enemy : MonoBehaviour
     }
 
     // 플레이어에게 맞았을때
-    private void OnTriggerEnter(Collider other)
+
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag("Bullet"))
+        if (collision.gameObject.CompareTag("Bullet"))
         {
             GetDamage(PlayerManager.Instance.PlayerStat.damage);
         }
+        
     }
     #endregion
 }

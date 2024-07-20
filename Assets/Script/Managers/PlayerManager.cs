@@ -29,6 +29,7 @@ public class PlayerStat
     // 경험치
     public float maxEXP;
     public float currentEXP;
+    public int level;
 
     public int[] skills;
 
@@ -43,6 +44,7 @@ public class PlayerStat
 
         maxEXP = 1000f;
         currentEXP = 0;
+        level = 1;
 
         skills = new int[Enum.GetValues(typeof(SkillName)).Length];
     }
@@ -85,6 +87,11 @@ public class PlayerStat
     {
         damage *= value;
     }
+
+    public void GetExp(float value)
+    {
+
+    }
 }
 
 public class PlayerManager : Singleton<PlayerManager>
@@ -105,6 +112,9 @@ public class PlayerManager : Singleton<PlayerManager>
 
     // HP bar
     [SerializeField] private PlayerHPbar playerHPbar;
+
+    // Exp bar
+    [SerializeField] private PlayerExpBar playerExpBar;
 
     // Player Stat
     [SerializeField] private PlayerStat playerStat;
@@ -129,5 +139,11 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         playerStat.GetHPBoost();        // 최대체력 / 현재 체력 추가
         playerHPbar.UpdateMaxHP();      // 추가된 체력에 맞춰 체력바 업데이트
+    }
+
+    public void GetExp(float value)
+    {
+        playerStat.GetExp(value);
+        playerExpBar.UpdateExpBar(ref playerStat);
     }
 }
