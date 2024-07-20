@@ -124,6 +124,7 @@ public abstract class Enemy : MonoBehaviour
     #region 플레이어에게 공격받았을때
     public void GetDamage(float value)
     {
+        EnemyManager.Instance.Hit(value, transform);
         enemyStat.enemyCurrentHP -= value;
 
         hpbar.UpdateHPbar(enemyStat.enemyCurrentHP, enemyStat.enemyMaxHP);
@@ -133,6 +134,9 @@ public abstract class Enemy : MonoBehaviour
 
             // 사망 처리
             currentRoom.RemoveEnemy(this.gameObject);
+
+            PlayerManager.Instance.GetExp(300);
+
             Destroy(this.gameObject, 0.05f);
         }
     }

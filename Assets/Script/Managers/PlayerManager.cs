@@ -16,6 +16,8 @@ public enum SkillName
 [System.Serializable]
 public class PlayerStat
 {
+    public float moveSpeed;
+
     // 공격 속도
     public float atkSpeed;
 
@@ -35,6 +37,8 @@ public class PlayerStat
 
     public PlayerStat()
     {
+        moveSpeed = 5f;
+
         atkSpeed = 1.0f;
 
         damage = 30f;
@@ -90,7 +94,22 @@ public class PlayerStat
 
     public void GetExp(float value)
     {
+        currentEXP += value;
+        if(currentEXP >= maxEXP)
+        {
+            // 레벨 업
+            level++;
+            // 경험치 max경험치 만큼 제거
+            currentEXP -= maxEXP;
 
+            // 슬롯머신 실행
+            RouletteManager.Instance.SlotMachineSpin();
+        }
+    }
+
+    public void GetMoveSpeed(float value)
+    {
+        moveSpeed += value;
     }
 }
 
