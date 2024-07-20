@@ -62,8 +62,7 @@ public class PlayerStat
         {
             currentHP = 0;
 
-            // »ç¸Á Ã³¸® Ãß°¡ÇÏ±â.
-            Debug.Log("»ç¸Á");
+            PlayerManager.Instance.Dead();
         }
 
         PlayerManager.Instance.PlayerMovement.PlayerAnimator.SetTrigger("DAMAGE");
@@ -164,5 +163,25 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         playerStat.GetExp(value);
         playerExpBar.UpdateExpBar(ref playerStat);
+    }
+
+    public void Dead()
+    {
+        PlayerMovement.PlayerAnimator.SetTrigger("Dead");
+        PlayerMovement.PlayerAnimator.SetBool("isDead", true);
+
+        GameManager.Instance.PlayerDead();
+    }
+
+    public void ResetData()
+    {
+        playerStat = new PlayerStat();
+        playerHPbar.playerStat = playerStat;
+
+        playerExpBar.UpdateExpBar(ref playerStat);
+        playerHPbar.UpdateMaxHP();
+
+        PlayerMovement.PlayerAnimator.SetBool("isDead", false);
+        PlayerMovement.IdlePlayerAnimation();
     }
 }

@@ -45,6 +45,11 @@ public class StageManager : Singleton<StageManager>
         stageIndex = 0;
     }
 
+    public void ResetStage()
+    {
+        stageIndex = 0;
+    }
+
     public void NextStage()
     {
         if (!currentRoom.isClearROOM)

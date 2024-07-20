@@ -10,7 +10,7 @@ public class PlayerHPbar : MonoBehaviour
 
     Vector3 offset;
     Transform playerTransform;
-    private PlayerStat playerStat;
+    public PlayerStat playerStat;
 
     [SerializeField] private Slider playerHPbar;
     [SerializeField] private TextMeshProUGUI playerHPTEXT;

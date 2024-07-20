@@ -59,7 +59,12 @@ public class Room : MonoBehaviour
 
     public void SpawnEnemy()
     {
-        foreach(Transform spawnPoint in  enemySpawnPoints)
+        while(enemyParent.childCount > 0)
+        {
+            Destroy(enemyParent.GetChild(0));
+        }
+
+        foreach (Transform spawnPoint in  enemySpawnPoints)
         {
             EnemyName name = (EnemyName)Random.Range(0, 4);
             GameObject enemy = Instantiate(EnemyManager.Instance.GetEnemy(name), enemyParent);
