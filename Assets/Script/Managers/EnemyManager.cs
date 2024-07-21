@@ -37,8 +37,8 @@ public class EnemyManager : Singleton<EnemyManager>
         return enemyBullets[(int)type];
     }
 
-    public void Hit(float damage, Transform pos)
+    public void Hit(float damage, Transform pos, bool isCritical)
     {
-        Instantiate(hitUI, pos.position + new Vector3(0,2,0), Quaternion.identity).GetComponent<HitUI>().DamagePopup(damage);
+        Instantiate(hitUI, pos.position + new Vector3(0,2,0), Quaternion.identity).GetComponent<HitUI>().DamagePopup(damage,isCritical);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    [SerializeField] private GameObject deadUI;
+    [SerializeField] private DeadUI deadUI;
 
     protected override void InitManager()
     {
@@ -14,7 +14,8 @@ public class GameManager : Singleton<GameManager>
 
     public void PlayerDead()
     {
-        deadUI.SetActive(true);
+        deadUI.gameObject.SetActive(true);
+        deadUI.DeadUIUpdate();
     }
 
     public void GameRestart()
@@ -24,6 +25,6 @@ public class GameManager : Singleton<GameManager>
         StageManager.Instance.ResetStage();
         StageManager.Instance.StartRoom.JoinPlayer(ref StageManager.Instance.currentRoom);
 
-        deadUI.SetActive(false);
+        deadUI.gameObject.SetActive(false);
     }
 }

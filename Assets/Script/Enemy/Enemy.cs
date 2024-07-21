@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public enum EnemyState
 {
@@ -124,7 +125,15 @@ public abstract class Enemy : MonoBehaviour
     #region 플레이어에게 공격받았을때
     public void GetDamage(float value)
     {
-        EnemyManager.Instance.Hit(value, transform);
+        bool isCritical = false;
+
+        if(Random.Range(0f, 1f) <= 0.5f)
+        {
+            isCritical = true;
+            value *= 1.5f;
+        }
+        
+        EnemyManager.Instance.Hit(value, transform, isCritical);
         enemyStat.enemyCurrentHP -= value;
 
         hpbar.UpdateHPbar(enemyStat.enemyCurrentHP, enemyStat.enemyMaxHP);
