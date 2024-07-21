@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class RouletteManager : Singleton<RouletteManager>
 {
+    public bool onRoulette;
+
     [Header("public")]
     [SerializeField] Sprite[] skillSprites;
 
@@ -25,6 +27,8 @@ public class RouletteManager : Singleton<RouletteManager>
     [SerializeField] private SlotMachineItem[] slotItems;
     protected override void InitManager()
     {
+        onRoulette = false;
+
         startList = new List<int>();
         resultIndexList = new List<int>();
 
@@ -50,7 +54,7 @@ public class RouletteManager : Singleton<RouletteManager>
 
             startList.RemoveAt(randomIndex);
         }
-
+        Time.timeScale = 0;
         StartCoroutine(StartRoulette());
     }
 
@@ -104,7 +108,13 @@ public class RouletteManager : Singleton<RouletteManager>
     #endregion
 
     #region 슬롯머신
-    public IEnumerator SlotMachineSpin()
+    public void SlotMachineSpin()
+    {
+        onRoulette = true;
+        StartCoroutine(MachineSpinCoroutine());
+    }
+
+    public IEnumerator MachineSpinCoroutine()
     {
 
         // 슬롯머신 활성화
@@ -127,7 +137,63 @@ public class RouletteManager : Singleton<RouletteManager>
 
     public void ChoiceSlotSkill(int skillIndex)
     {
+        // 0. 공격력 증가1
+        // 1. 이속 증가1
+        // 2. 최대체력 증가1
+        // 3. 공속 증가1
+        // 4. 이속증가?1
+        // 5. 사선 추가
+        // 6. 공속 증가
+        // 7. 공속 증가
+        // 8. 직선 추가
+        // 9. 몹 바운스
+        // 10. 추가 공격
+        // 11. 벽 바운스
+
+        onRoulette = false;
         Debug.Log(skillIndex + " 번 스킬이 선택됨");
+
+        switch(skillIndex)
+        {
+            case 0:
+                PlayerManager.Instance.PlayerStat.GetDamageBoost(1.2f);
+                break;
+            case 1:
+                PlayerManager.Instance.PlayerStat.GetMoveSpeed(1f);
+                break;
+            case 2:
+                PlayerManager.Instance.GetHPBoost();
+                break;
+            case 3:
+                PlayerManager.Instance.PlayerStat.MultiplyAtkSpeed(1.1f);
+                break;
+            case 4:
+                PlayerManager.Instance.PlayerStat.GetMoveSpeed(1f);
+                break;
+            case 5:
+                PlayerManager.Instance.PlayerStat.skills[(int)SkillName.AddDiagonal]++;
+                break;
+            case 6:
+                PlayerManager.Instance.PlayerStat.MultiplyAtkSpeed(1.11f);
+                break;
+            case 7:
+                PlayerManager.Instance.PlayerStat.MultiplyAtkSpeed(1.12f);
+                break;
+            case 8:
+                PlayerManager.Instance.PlayerStat.skills[(int)SkillName.AddStraight]++;
+                break;
+            case 9:
+                PlayerManager.Instance.PlayerStat.skills[(int)SkillName.EnemyBounce]++;
+                break;
+            case 10:
+                PlayerManager.Instance.PlayerStat.skills[(int)SkillName.MultiAttack]++;
+                break;
+            case 11:
+                PlayerManager.Instance.PlayerStat.skills[(int)SkillName.Bounce]++;
+                break;
+        }
+
+        slotMachineUI.SetActive(false);
     }
     #endregion
 }

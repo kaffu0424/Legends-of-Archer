@@ -34,6 +34,7 @@ public class SlotMachineItem : MonoBehaviour
         spriteIndexs = new List<int>();
 
         choiceButton.interactable = false;
+        choiceButton.onClick.RemoveAllListeners();
 
         slotSprite[0].sprite = skillSprites[_skillIndex];
         spriteIndexs.Add(_skillIndex);

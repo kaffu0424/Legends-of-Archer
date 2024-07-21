@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,9 +40,15 @@ public class StageManager : Singleton<StageManager>
     public Room AngleRoom => angleRoom;
     public Room BossRoom => bossRoom;
 
+    public int stage => stageIndex;
     protected override void InitManager()
     {
         // 스테이지를 0으로 초기화
+        stageIndex = 0;
+    }
+
+    public void ResetStage()
+    {
         stageIndex = 0;
     }
 
@@ -73,6 +80,13 @@ public class StageManager : Singleton<StageManager>
                 return;
             }
 
+        }
+
+        if(stageIndex == 20)
+        {
+            // 마지막 방 클리어
+            GameManager.Instance.PlayerDead();
+            return;
         }
 
         // 기존 방의 플레이어 입장상태를 false

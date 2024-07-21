@@ -1,11 +1,23 @@
 using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum SkillName
+{
+    EnemyBounce,    // 몬스터 튕기기      
+    MultiAttack,    // 총알 한번 더 쏘기  - 완료
+    AddStraight,    // 직선 화살 추가     - 완료
+    AddDiagonal,    // 사선 화살 추가     - 완료
+    Bounce          // 벽 튕기기
+}
+
 [System.Serializable]
 public class PlayerStat
 {
+    public float moveSpeed;
+
     // 공격 속도
     public float atkSpeed;
 
@@ -19,9 +31,14 @@ public class PlayerStat
     // 경험치
     public float maxEXP;
     public float currentEXP;
+    public int level;
+
+    public int[] skills;
 
     public PlayerStat()
     {
+        moveSpeed = 5f;
+
         atkSpeed = 1.0f;
 
         damage = 30f;
@@ -31,17 +48,11 @@ public class PlayerStat
 
         maxEXP = 1000f;
         currentEXP = 0;
+        level = 1;
+
+        skills = new int[Enum.GetValues(typeof(SkillName)).Length];
     }
 
-    public void MultiplyAtkSpeed(float value)
-    {
-        atkSpeed *= value;
-
-
-        // 공속 제한
-        if(atkSpeed > 10000f)
-            atkSpeed = 10000;
-    }
 
     public void GetDamage(float damage)
     {
@@ -51,17 +62,53 @@ public class PlayerStat
         {
             currentHP = 0;
 
-            // 사망 처리 추가하기.
-            Debug.Log("사망");
+            PlayerManager.Instance.Dead();
         }
 
         PlayerManager.Instance.PlayerMovement.PlayerAnimator.SetTrigger("DAMAGE");
     }
 
+    // 최대체력 증가
     public void GetHPBoost()
     {
         maxHP += 150;
         currentHP += 150;
+    }
+
+    // 공속 증가
+    public void MultiplyAtkSpeed(float value)
+    {
+        atkSpeed *= value;
+
+        // 공속 제한
+        if(atkSpeed > 10000f)
+            atkSpeed = 10000;
+    }
+
+    // 공격력 증가
+    public void GetDamageBoost(float value)
+    {
+        damage *= value;
+    }
+
+    public void GetExp(float value)
+    {
+        currentEXP += value;
+        if(currentEXP >= maxEXP)
+        {
+            // 레벨 업
+            level++;
+            // 경험치 max경험치 만큼 제거
+            currentEXP -= maxEXP;
+
+            // 슬롯머신 실행
+            RouletteManager.Instance.SlotMachineSpin();
+        }
+    }
+
+    public void GetMoveSpeed(float value)
+    {
+        moveSpeed += value;
     }
 }
 
@@ -83,6 +130,9 @@ public class PlayerManager : Singleton<PlayerManager>
 
     // HP bar
     [SerializeField] private PlayerHPbar playerHPbar;
+
+    // Exp bar
+    [SerializeField] private PlayerExpBar playerExpBar;
 
     // Player Stat
     [SerializeField] private PlayerStat playerStat;
@@ -107,5 +157,31 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         playerStat.GetHPBoost();        // 최대체력 / 현재 체력 추가
         playerHPbar.UpdateMaxHP();      // 추가된 체력에 맞춰 체력바 업데이트
+    }
+
+    public void GetExp(float value)
+    {
+        playerStat.GetExp(value);
+        playerExpBar.UpdateExpBar(ref playerStat);
+    }
+
+    public void Dead()
+    {
+        PlayerMovement.PlayerAnimator.SetTrigger("Dead");
+        PlayerMovement.PlayerAnimator.SetBool("isDead", true);
+
+        GameManager.Instance.PlayerDead();
+    }
+
+    public void ResetData()
+    {
+        playerStat = new PlayerStat();
+        playerHPbar.playerStat = playerStat;
+
+        playerExpBar.UpdateExpBar(ref playerStat);
+        playerHPbar.UpdateMaxHP();
+
+        PlayerMovement.PlayerAnimator.SetBool("isDead", false);
+        PlayerMovement.IdlePlayerAnimation();
     }
 }

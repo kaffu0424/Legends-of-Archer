@@ -20,9 +20,11 @@ public class EnemyManager : Singleton<EnemyManager>
 {
     [SerializeField] private List<GameObject> enemyPrefabs;
     [SerializeField] private List<GameObject> enemyBullets;
+
+    [SerializeField] private GameObject hitUI;
     protected override void InitManager()
     {
-        
+
     }
 
     public GameObject GetEnemy(EnemyName enemyName)
@@ -33,5 +35,10 @@ public class EnemyManager : Singleton<EnemyManager>
     public GameObject GetEnemyBullet(BulletType type)
     {
         return enemyBullets[(int)type];
+    }
+
+    public void Hit(float damage, Transform pos, bool isCritical)
+    {
+        Instantiate(hitUI, pos.position + new Vector3(0,2,0), Quaternion.identity).GetComponent<HitUI>().DamagePopup(damage,isCritical);
     }
 }

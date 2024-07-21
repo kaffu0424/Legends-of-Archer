@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public enum EnemyState
 {
@@ -124,6 +125,15 @@ public abstract class Enemy : MonoBehaviour
     #region 플레이어에게 공격받았을때
     public void GetDamage(float value)
     {
+        bool isCritical = false;
+
+        if(Random.Range(0f, 1f) <= 0.5f)
+        {
+            isCritical = true;
+            value *= 1.5f;
+        }
+        
+        EnemyManager.Instance.Hit(value, transform, isCritical);
         enemyStat.enemyCurrentHP -= value;
 
         hpbar.UpdateHPbar(enemyStat.enemyCurrentHP, enemyStat.enemyMaxHP);
@@ -133,17 +143,22 @@ public abstract class Enemy : MonoBehaviour
 
             // 사망 처리
             currentRoom.RemoveEnemy(this.gameObject);
+
+            PlayerManager.Instance.GetExp(300);
+
             Destroy(this.gameObject, 0.05f);
         }
     }
 
     // 플레이어에게 맞았을때
-    private void OnTriggerEnter(Collider other)
+
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag("Bullet"))
+        if (collision.gameObject.CompareTag("Bullet"))
         {
             GetDamage(PlayerManager.Instance.PlayerStat.damage);
         }
+        
     }
     #endregion
 }

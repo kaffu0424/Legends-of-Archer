@@ -48,12 +48,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (RouletteManager.Instance.onRoulette)
+            return;
+
         if (joystick.IsMoveing)
         {
-            playerRB.velocity = new Vector3(joystick.JoyVec.x, 0, joystick.JoyVec.y) * moveSpeed;
+            playerRB.velocity = new Vector3(joystick.JoyVec.x, 0, joystick.JoyVec.y) * PlayerManager.Instance.PlayerStat.moveSpeed;
 
-            playerRB.rotation = Quaternion.LookRotation(new Vector3(
-                joystick.JoyVec.x, 0, joystick.JoyVec.y));
+            playerRB.rotation = Quaternion.LookRotation(new Vector3(joystick.JoyVec.x, 0, joystick.JoyVec.y));
         }
     }
 
@@ -77,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
         playerState = state;
 
-        PlayerAnimator.SetBool(stateStrings[(int)state], true);
+        PlayerAnimator.SetBool(stateStrings[(int)playerState], true);
     }
     #endregion
 
